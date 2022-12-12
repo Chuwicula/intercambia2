@@ -1,0 +1,107 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Registro</title>
+        <link rel="stylesheet" href="css/style.css"/>
+    </h:head>
+    <h:body>
+
+        <div class="center">
+            <p:card style="margin-bottom: 2em" >
+                <f:facet name="title">
+                    Registro
+                </f:facet>
+                <h:form>
+                    <div class="card">
+                        <div class="field">                            
+                            <p:outputLabel for="name" styleClass="block">Nombre</p:outputLabel>
+
+                            <p:inputText id="name" styleClass="block" placeholder="Nombre" value="#{registroBean.nuevoUsuario.nombreUsuario}"/>
+
+                            <p:outputLabel for="lastName" styleClass="block">Apellidos</p:outputLabel>
+
+                            <p:inputText id="lastName" styleClass="block" placeholder="Apellidos" value="#{registroBean.nuevoUsuario.apellido}"/>
+
+                        </div>   
+                        <br/>
+                        <div class="field">                            
+                            <p:outputLabel for="email" styleClass="block">Correo electrónico</p:outputLabel>
+
+                            <p:inputText id="email" value="#{registroBean.nuevoUsuario.correoElectronico}" />                            
+
+
+                        </div> 
+                        <div class="field">
+                            <p:outputLabel for="country" styleClass="block">País</p:outputLabel>
+
+                            <p:inputText id="country" value="#{registroBean.pais}"/>
+
+                            <p:outputLabel for="city" styleClass="block">Ciudad</p:outputLabel>
+
+                            <p:inputText id="city" value="#{registroBean.ciudad}"/>
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="neighborhood" styleClass="block">Barrio</p:outputLabel>
+
+                            <p:inputText id="neighborhood" value="#{registroBean.barrio}" />
+
+                            <p:outputLabel for="Address" styleClass="block">Dirección</p:outputLabel>
+
+                            <p:inputText id="Address" value="#{registroBean.direccion}"/>
+                        </div>
+
+                        <div class="field">
+                            <p:outputLabel for="suscription" styleClass="block">Suscripción</p:outputLabel>
+
+                            <p:selectOneRadio id="suscription"  value="#{registroBean.suscripcion}">
+                                <f:selectItem itemLabel="Mensual" itemValue="1"/>
+                                <f:selectItem itemLabel="Anual" itemValue="2"/>
+                            </p:selectOneRadio>
+
+
+                        </div>
+                        <br/>
+
+
+
+                        <p:commandButton value="Registrarse" 
+                                         styleClass="rounded-button ui-button-danger"  
+                                         ajax="false"
+                                         action="#{registroBean.guardarUsuario()}"/>
+
+                        <p:commandButton value="volver" 
+                                         styleClass="rounded-button ui-button-danger"  
+                                         ajax="false"
+                                         action="/index"/>
+                    </div>
+
+                </h:form>                                
+            </p:card>
+        </div>
+        <h:form>
+            <p:dialog header="Aviso" widgetVar="dlg1" minHeight="40" width="350" showEffect="fade">
+                <p class="m-0">Usuario registrado</p>
+                <f:facet name="footer">
+                    <p:commandButton type="button" ajax="false" value="Iniciar Sesión" action="/index" styleClass="ui-button-flat mr-2" style="width: 6rem" />
+                </f:facet>
+            </p:dialog> 
+            <p:dialog header="Aviso" widgetVar="dlg2" minHeight="40" width="350" showEffect="fade">
+                <p class="m-0">El correo electrónico ya se encuentra registrado en el sistema</p>
+                <f:facet name="footer">
+                    <h:commandButton type="button" 
+                                     value="Iniciar Sesión" 
+                                     onclick="PF('dlg2').hide(); window.location.href" 
+                                     action="/index?faces-redirect=true"
+                                     styleClass="rounded-button ui-button-danger"   
+                                     style="width: 6rem" />
+                </f:facet>
+            </p:dialog> 
+        </h:form>
+    </h:body>    
+</html>
