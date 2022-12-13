@@ -9,7 +9,6 @@ import entities.Usuario;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.NoResultException;
-import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 

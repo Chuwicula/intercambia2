@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Elemento.findByIdelemento", query = "SELECT e FROM Elemento e WHERE e.idelemento = :idelemento"),
     @NamedQuery(name = "Elemento.findByNombreelemento", query = "SELECT e FROM Elemento e WHERE e.nombreelemento = :nombreelemento"),
     @NamedQuery(name = "Elemento.findByDescripcion", query = "SELECT e FROM Elemento e WHERE e.descripcion = :descripcion"),
-    @NamedQuery(name = "Elemento.findElementosDisponibles", query = "SELECT e FROM Elemento e WHERE e.idusuario != :usuario and e.idestadoelemento.idestadoelemento = :estado")
+    @NamedQuery(name = "Elemento.findElementosDisponibles", query = "SELECT e FROM Elemento e WHERE e.idusuario != :usuario and e.idestadoelemento.idestadoelemento = :estado"),
+    @NamedQuery(name = "Elemento.findElementosUsuario", query = "SELECT e FROM Elemento e WHERE e.idusuario = :usuario")
 })
 public class Elemento implements Serializable {
 
@@ -53,12 +54,21 @@ public class Elemento implements Serializable {
     @Size(max = 200)
     @Column(name = "descripcion")
     private String descripcion;
+    
+    @Column(name = "elementosdeseados")
+    private String elementosdesdeados;
+    
+    @Column(name = "esnuevo")
+    private boolean esnuevo;
+    
     @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria")
     @ManyToOne(optional = false)
     private Categoria idcategoria;
     @JoinColumn(name = "idestadoelemento", referencedColumnName = "idestadoelemento")
     @ManyToOne(optional = false)
     private Estadoelemento idestadoelemento;
+    
+    
 
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
@@ -149,6 +159,34 @@ public class Elemento implements Serializable {
     @Override
     public String toString() {
         return "entities.Elemento[ idelemento=" + idelemento + " ]";
+    }
+
+    /**
+     * @return the elementosdesdeados
+     */
+    public String getElementosdesdeados() {
+        return elementosdesdeados;
+    }
+
+    /**
+     * @param elementosdesdeados the elementosdesdeados to set
+     */
+    public void setElementosdesdeados(String elementosdesdeados) {
+        this.elementosdesdeados = elementosdesdeados;
+    }
+
+    /**
+     * @return the esnuevo
+     */
+    public boolean isEsnuevo() {
+        return esnuevo;
+    }
+
+    /**
+     * @param esnuevo the esnuevo to set
+     */
+    public void setEsnuevo(boolean esnuevo) {
+        this.esnuevo = esnuevo;
     }
 
 }

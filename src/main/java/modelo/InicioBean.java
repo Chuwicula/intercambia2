@@ -54,7 +54,7 @@ public class InicioBean {
     }
 
     public String validarRol(Usuario usuario) {
-        String rootPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
+        String rootPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()+"/faces";
         switch (usuario.getIdrol().getNombrerol().toLowerCase()) {
             case "trocador":
                 return rootPath + "/modulos/trocador/disponibles.xhtml?faces-redirect=true";

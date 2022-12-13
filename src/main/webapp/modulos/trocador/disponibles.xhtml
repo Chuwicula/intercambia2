@@ -1,36 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
-        <title>Intercambialo</title>
+        <title>Trocador</title>
         <link rel="stylesheet" href="css/style.css"/>
     </h:head>
-    <h:body>
+    <h:body id="bod">
+        <p:growl id="messages" showDetail="true"/>
+        <h:form >    
+            <div class="card">
+                <p:tabMenu activeIndex="#{elementosDisponiblesBean.indexactivo}">
+                    <p:menuitem value="Inicio" icon="pi pi-fw pi-home" update="content" action="#{elementosDisponiblesBean.setIndexactivo(1)}"/>   
+                    <p:menuitem value="Mi perfil"  icon="pi pi-fw pi-calendar" update="content" action="#{elementosDisponiblesBean.setIndexactivo(2)}">
+                    </p:menuitem>
+                    <p:menuitem value="Mis Elementos"  icon="pi pi-fw pi-pencil" update="content" action="#{elementosDisponiblesBean.setIndexactivo(3)}">
+                        <f:param name="i" value="2"/>
+                    </p:menuitem>
+                </p:tabMenu>
+            </div>          
+        </h:form>
 
-        <div class="card product">
-            <h:form id="form">
-                <p:messages id="messages"/>
-                <p:dataView var="product"  rows="12" paginator="true"
-                            rowsPerPageTemplate="6,12,16"
-                            paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                            gridIcon="pi pi-th-large" listIcon="pi pi-bars">
-                    <p:dataViewGridItem>
-                        <div class="product-grid-item card border-1">
-                            <div class="product-grid-item-top">
-                                <div>
-                                    <i class="pi pi-tag product-category-icon"/>
-                                    <span class="product-category">#{product.category}</span>
+        <div class="card product" >
+            <h:panelGrid id="content" width="100%">
+                <h:form id="form" rendered="#{elementosDisponiblesBean.indexactivo == 1}">
+                    <p:messages id="messages"/>
+                    <p:dataView var="elemento"  rows="12" paginator="true" value="#{elementosDisponiblesBean.elementosDisponibles}"
+                                rowsPerPageTemplate="6,12,16"
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                gridIcon="pi pi-th-large" listIcon="pi pi-bars" emptyMessage="No hay productos disponibles">
+                        <p:dataViewGridItem>
+                            <div class="product-grid-item card border-1">
+                                <div class="product-grid-item-top">
+                                    <div>
+                                        <i class="pi pi-tag product-category-icon"/>
+                                        <span class="product-category">#{elemento.idcategoria.nombrecategoria}</span>
+                                    </div>
+                                    <span class="product-badge">#{elemento.descripcion}</span>
                                 </div>
-                                <span class="product-badge status-#{product.inventoryStatus.name().toLowerCase()}">#{product.inventoryStatus.text}</span>
                             </div>
-                        </div>
-                    </p:dataViewGridItem>
+                        </p:dataViewGridItem>
 
-                </p:dataView>
+                    </p:dataView>
 
-            </h:form>
+                </h:form>
+
+                <h:form rendered="#{elementosDisponiblesBean.indexactivo == 2}">
+                    <p:commandButton value="Crear elemento"
+                                     type="button" 
+                                     icon="pi pi-external-link" 
+                                     update="content"
+                                     action="#{elementosDisponiblesBean.setIndexactivo(4)}"/>
+                  
+                </h:form>
+
+                <h:form rendered="#{elementosDisponiblesBean.indexactivo == 3}">
+
+                </h:form>
+
+                <h:form rendered="#{elementosDisponiblesBean.indexactivo == 4}">
+                    <p:outputLabel value="Nombre"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.nombreelemento}"/>
+                    <br/>
+                    <p:outputLabel value="Descripción"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.descripcion}"/>
+                    <br/>
+                    <p:outputLabel value="Estado"/>
+                    <p:selectBooleanButton onLabel="Usado" offLabel="Nuevo" 
+                                           style="width:6rem" 
+                                           value="#{misElementosBean.nuevoElemento.esnuevo}"/>
+                    <br/>
+
+                    <p:outputLabel value="Objeto deseado, ingrese los elementos separados por coma"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.elementosdesdeados}"/>
+                    <br/>
+                    <p:outputLabel value="Categoría"/>
+                    <div class="field col-12 md:col-4">
+                        <p:outputLabel value="Label"/>
+                        <p:selectOneMenu id="labeled" value="#{misElementosBean.idCategoria}" 
+                                         label="Seleccione una categoría"
+                                         alwaysDisplayLabel="true">
+                            <f:selectItems value="#{misElementosBean.categorias}" 
+                                           var="categoria" itemLabel="#{categoria.nombrecategoria}"
+                                           itemValue="#{categoria.idcategoria}"
+                                           />
+                        </p:selectOneMenu>
+                    </div>
+                    <br/>
+                    <p:commandButton value="Publicar" action="#{misElementosBean.crearElemento()}" 
+                                    />
+
+
+                </h:form>
+
+            </h:panelGrid>
+
         </div>
 
     </h:body>
