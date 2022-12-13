@@ -7,196 +7,240 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Date;
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
  * @author nicol
  */
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "Usuario.findAll",
-            query = "SELECT a FROM Usuario a"),
-    @NamedQuery(name = "Usuario.findByPass",
-            query = "SELECT a FROM Usuario a where a.correoElectronico = :mail AND a.contrasena = :pass"),
-    @NamedQuery(name = "Usuario.findByMail",
-            query = "SELECT COUNT(a) FROM Usuario a where a.correoElectronico = :mail")
-})
 @Table(name = "usuario")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "Usuario.findAll", query = "SELECT u FROM Usuario u"),
+    @NamedQuery(name = "Usuario.findByIdusuario", query = "SELECT u FROM Usuario u WHERE u.idusuario = :idusuario"),
+    @NamedQuery(name = "Usuario.findByNombreu", query = "SELECT u FROM Usuario u WHERE u.nombreu = :nombreu"),
+    @NamedQuery(name = "Usuario.findByTipodocumentou", query = "SELECT u FROM Usuario u WHERE u.tipodocumentou = :tipodocumentou"),
+    @NamedQuery(name = "Usuario.findByDireccionu", query = "SELECT u FROM Usuario u WHERE u.direccionu = :direccionu"),
+    @NamedQuery(name = "Usuario.findByFechanacimientou", query = "SELECT u FROM Usuario u WHERE u.fechanacimientou = :fechanacimientou"),
+    @NamedQuery(name = "Usuario.findByPass", query = "SELECT u FROM Usuario u WHERE u.credenciales.usuario = :mail AND u.credenciales.contrasena = :pass"),
+    @NamedQuery(name = "Usuario.findByMail", query = "SELECT COUNT(u) FROM Usuario u WHERE u.credenciales.usuario = :mail")
+})
 public class Usuario implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idusuario")
-    private Integer idUsuario;
+    private Integer idusuario;
 
-    @Column(name = "correo")
-    private String correoElectronico;
+    @Size(min = 1, max = 100)
+    @Column(name = "nombreu")
+    private String nombreu;
 
     @Column(name = "tipodocumentou")
-    private String identificacion;
+    private String tipodocumentou;
 
-    @Column(name = "nombreu")
-    private String nombreUsuario;
-
-    @Column(name = "apellido")
-    private String apellido;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "direccionu")
+    private String direccionu;
 
     @Column(name = "fechanacimientou")
     @Temporal(TemporalType.DATE)
-    private Date fechaNacimiento;
+    private Date fechanacimientou;
 
-    @Column(name = "suscripcion")
-    private Integer tipoSuscripcion;
+    @JoinColumn(name = "idrol", referencedColumnName = "idrol")
+    @ManyToOne(optional = false)
+    private Rol idrol;
 
-    @Column(name = "direccionu")
-    private String direccion;
-    
-    @Column(name = "contrasena")
-    private String contrasena;
+    private Integer tiposuscripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "idrol")
-    private Rol rol;
+    @Temporal(javax.persistence.TemporalType.DATE)
+    private Date fechavencimientosuscripcion;
 
-    /**
-     * @return the idUsuario
-     */
-    public int getIdUsuario() {
-        return idUsuario;
+    @OneToMany(mappedBy = "idusuario")
+    private List<Elemento> elementos;
+
+    @OneToOne(mappedBy = "idusuario", cascade = CascadeType.ALL)
+    private Credenciales credenciales;
+
+    @OneToMany(mappedBy = "usuario")
+    private List<Solicitud> solicitudes;
+
+    public Usuario() {
+    }
+
+    public Usuario(Integer idusuario) {
+        this.idusuario = idusuario;
+    }
+
+    public Usuario(Integer idusuario, String nombreu, String direccionu) {
+        this.idusuario = idusuario;
+        this.nombreu = nombreu;
+        this.direccionu = direccionu;
+    }
+
+    public Integer getIdusuario() {
+        return idusuario;
+    }
+
+    public void setIdusuario(Integer idusuario) {
+        this.idusuario = idusuario;
+    }
+
+    public String getNombreu() {
+        return nombreu;
+    }
+
+    public void setNombreu(String nombreu) {
+        this.nombreu = nombreu;
+    }
+
+    public String getTipodocumentou() {
+        return tipodocumentou;
+    }
+
+    public void setTipodocumentou(String tipodocumentou) {
+        this.tipodocumentou = tipodocumentou;
+    }
+
+    public String getDireccionu() {
+        return direccionu;
+    }
+
+    public void setDireccionu(String direccionu) {
+        this.direccionu = direccionu;
+    }
+
+    public Date getFechanacimientou() {
+        return fechanacimientou;
+    }
+
+    public void setFechanacimientou(Date fechanacimientou) {
+        this.fechanacimientou = fechanacimientou;
+    }
+
+    public Rol getIdrol() {
+        return idrol;
+    }
+
+    public void setIdrol(Rol idrol) {
+        this.idrol = idrol;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (idusuario != null ? idusuario.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Usuario)) {
+            return false;
+        }
+        Usuario other = (Usuario) object;
+        if ((this.idusuario == null && other.idusuario != null) || (this.idusuario != null && !this.idusuario.equals(other.idusuario))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entities.Usuario[ idusuario=" + idusuario + " ]";
     }
 
     /**
-     * @param idUsuario the idUsuario to set
+     * @return the elementos
      */
-    public void setIdUsuario(int idUsuario) {
-        this.idUsuario = idUsuario;
+    public List<Elemento> getElementos() {
+        return elementos;
     }
 
     /**
-     * @return the correoElectronico
+     * @param elementos the elementos to set
      */
-    public String getCorreoElectronico() {
-        return correoElectronico;
+    public void setElementos(List<Elemento> elementos) {
+        this.elementos = elementos;
     }
 
     /**
-     * @param correoElectronico the correoElectronico to set
+     * @return the credenciales
      */
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
+    public Credenciales getCredenciales() {
+        return credenciales;
     }
 
     /**
-     * @return the identificacion
+     * @param credenciales the credenciales to set
      */
-    public String getIdentificacion() {
-        return identificacion;
+    public void setCredenciales(Credenciales credenciales) {
+        this.credenciales = credenciales;
     }
 
     /**
-     * @param identificacion the identificacion to set
+     * @return the tiposuscripcion
      */
-    public void setIdentificacion(String identificacion) {
-        this.identificacion = identificacion;
+    public Integer getTiposuscripcion() {
+        return tiposuscripcion;
     }
 
     /**
-     * @return the nombreUsuario
+     * @param tiposuscripcion the tiposuscripcion to set
      */
-    public String getNombreUsuario() {
-        return nombreUsuario;
+    public void setTiposuscripcion(Integer tiposuscripcion) {
+        this.tiposuscripcion = tiposuscripcion;
     }
 
     /**
-     * @param nombreUsuario the nombreUsuario to set
+     * @return the fechavencimientosuscripcion
      */
-    public void setNombreUsuario(String nombreUsuario) {
-        this.nombreUsuario = nombreUsuario;
+    public Date getFechavencimientosuscripcion() {
+        return fechavencimientosuscripcion;
     }
 
     /**
-     * @return the rol
+     * @param fechavencimientosuscripcion the fechavencimientosuscripcion to set
      */
-    public Rol getRol() {
-        return rol;
+    public void setFechavencimientosuscripcion(Date fechavencimientosuscripcion) {
+        this.fechavencimientosuscripcion = fechavencimientosuscripcion;
     }
 
     /**
-     * @param rol the rol to set
+     * @return the solicitudes
      */
-    public void setRol(Rol rol) {
-        this.rol = rol;
+    public List<Solicitud> getSolicitudes() {
+        return solicitudes;
     }
 
     /**
-     * @return the apellido
+     * @param solicitudes the solicitudes to set
      */
-    public String getApellido() {
-        return apellido;
-    }
-
-    /**
-     * @param apellido the apellido to set
-     */
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    /**
-     * @return the fechaNacimiento
-     */
-    public Date getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    /**
-     * @param fechaNacimiento the fechaNacimiento to set
-     */
-    public void setFechaNacimiento(Date fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    /**
-     * @return the tipoSuscripcion
-     */
-    public Integer getTipoSuscripcion() {
-        return tipoSuscripcion;
-    }
-
-    /**
-     * @param tipoSuscripcion the tipoSuscripcion to set
-     */
-    public void setTipoSuscripcion(Integer tipoSuscripcion) {
-        this.tipoSuscripcion = tipoSuscripcion;
-    }
-
-    /**
-     * @return the direccion
-     */
-    public String getDireccion() {
-        return direccion;
-    }
-
-    /**
-     * @param direccion the direccion to set
-     */
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
-
-    /**
-     * @return the contrasena
-     */
-    public String getContrasena() {
-        return contrasena;
-    }
-
-    /**
-     * @param contrasena the contrasena to set
-     */
-    public void setContrasena(String contrasena) {
-        this.contrasena = contrasena;
+    public void setSolicitudes(List<Solicitud> solicitudes) {
+        this.solicitudes = solicitudes;
     }
 
 }

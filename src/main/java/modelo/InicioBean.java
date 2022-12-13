@@ -39,7 +39,7 @@ public class InicioBean {
         System.out.println("user: " + mail + " is tryin to login");
         Usuario user = usuarioMapper.readByCredentials(mail, pass);
         if (user != null) {
-            System.out.println("id: " + user.getIdUsuario());
+            System.out.println("id: " + user.getIdusuario());
             sessionBean.setUsuario(user);
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(
@@ -55,7 +55,7 @@ public class InicioBean {
 
     public String validarRol(Usuario usuario) {
         String rootPath = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath();
-        switch (usuario.getRol().getNombreRol().toLowerCase()) {
+        switch (usuario.getIdrol().getNombrerol().toLowerCase()) {
             case "trocador":
                 return rootPath + "/modulos/trocador/disponibles.xhtml?faces-redirect=true";
             case "admin":

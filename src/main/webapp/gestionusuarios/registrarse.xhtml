@@ -21,18 +21,21 @@
                         <div class="field">                            
                             <p:outputLabel for="name" styleClass="block">Nombre</p:outputLabel>
 
-                            <p:inputText id="name" styleClass="block" placeholder="Nombre" value="#{registroBean.nuevoUsuario.nombreUsuario}"/>
+                            <p:inputText id="name" styleClass="block"
+                                         placeholder="Nombre" 
+                                         value="#{registroBean.nuevoUsuario.nombreu}"/>
 
                             <p:outputLabel for="lastName" styleClass="block">Apellidos</p:outputLabel>
 
-                            <p:inputText id="lastName" styleClass="block" placeholder="Apellidos" value="#{registroBean.nuevoUsuario.apellido}"/>
+                            <p:inputText id="lastName" styleClass="block" 
+                                         placeholder="Apellidos" value="#{registroBean.nuevoUsuario.nombreu}"/>
 
                         </div>   
                         <br/>
                         <div class="field">                            
                             <p:outputLabel for="email" styleClass="block">Correo electrónico</p:outputLabel>
 
-                            <p:inputText id="email" value="#{registroBean.nuevoUsuario.correoElectronico}" />                            
+                            <p:inputText id="email" value="#{registroBean.correoElectronico}" />                            
 
 
                         </div> 

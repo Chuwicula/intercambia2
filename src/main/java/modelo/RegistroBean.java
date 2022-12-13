@@ -5,9 +5,12 @@
  */
 package modelo;
 
+import entities.Credenciales;
 import entities.Rol;
 import entities.Usuario;
 import java.io.Serializable;
+import java.util.Calendar;
+import java.util.Date;
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -42,13 +45,15 @@ public class RegistroBean implements Serializable {
 
     private String suscripcion;
 
+    private String correoElectronico;
+
     @PostConstruct
     public void init() {
         nuevoUsuario = new Usuario();
 
         System.out.println("buenas");
         Rol rolTrocador = getRolMapper().buscar(1);
-        nuevoUsuario.setRol(rolTrocador);
+        nuevoUsuario.setIdrol(rolTrocador);
         System.out.println(rolMapper.obtenerRoles());
         System.out.println("rol " + rolTrocador);
     }
@@ -56,12 +61,36 @@ public class RegistroBean implements Serializable {
     public void guardarUsuario() {
 
         String direccionTotal = pais + " " + ciudad + " " + barrio + " " + direccion;
-        nuevoUsuario.setDireccion(direccionTotal);
-        nuevoUsuario.setTipoSuscripcion(Integer.parseInt(suscripcion));
+        nuevoUsuario.setDireccionu(direccionTotal);
+        //nuevoUsuario.setTipoSuscripcion(Integer.parseInt(suscripcion));
 
         System.out.println("voy a validar");
-        if (!usuarioMapper.validarExistenciaUsuario(nuevoUsuario.getCorreoElectronico())) {
+        if (!usuarioMapper.validarExistenciaUsuario(correoElectronico)) {
+            Credenciales credenciales = new Credenciales();
+            credenciales.setIdusuario(nuevoUsuario);
+            credenciales.setUsuario(correoElectronico);
+            credenciales.setContrasena("1234");
+            nuevoUsuario.setCredenciales(credenciales);
             System.out.println("validado, no existe");
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, 6);
+            switch (suscripcion) {
+                case "1":
+                    nuevoUsuario.setTiposuscripcion(Integer.parseInt(suscripcion));
+                    calendar.add(Calendar.MONTH, 6);
+                    nuevoUsuario.setFechavencimientosuscripcion(calendar.getTime());
+                    break;
+                case "2":
+                    nuevoUsuario.setTiposuscripcion(Integer.parseInt(suscripcion));
+                    calendar.add(Calendar.YEAR, 1);
+                    nuevoUsuario.setFechavencimientosuscripcion(calendar.getTime());
+                    break;
+                default:
+                    System.out.println("Suscripción no válida");
+            }
+
+            nuevoUsuario.setFechanacimientou(new Date());
+            nuevoUsuario.setTipodocumentou("CC");
             Usuario usuarioGuardado = usuarioMapper.crear(nuevoUsuario);
             if (usuarioGuardado != null) {
                 PrimeFaces current = PrimeFaces.current();
@@ -169,6 +198,20 @@ public class RegistroBean implements Serializable {
      */
     public void setSuscripcion(String suscripcion) {
         this.suscripcion = suscripcion;
+    }
+
+    /**
+     * @return the correoElectronico
+     */
+    public String getCorreoElectronico() {
+        return correoElectronico;
+    }
+
+    /**
+     * @param correoElectronico the correoElectronico to set
+     */
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
 }
