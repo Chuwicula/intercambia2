@@ -35,21 +35,20 @@ public class InicioBean {
     @Inject
     UsuarioMapper usuarioMapper;
 
-    public void iniciarSesion() {
-        System.out.println("user: " + mail + " is tryin to login");
-        Usuario user = usuarioMapper.readByCredentials(mail, pass);
-        if (user != null) {
-            System.out.println("id: " + user.getIdusuario());
+    public void iniciarSesion() {        
+        Usuario user = usuarioMapper.buscarPorCredenciales(mail, pass);
+        if (user != null) {            
             sessionBean.setUsuario(user);
             try {
                 FacesContext.getCurrentInstance().getExternalContext().redirect(
                         validarRol(user));
             } catch (IOException ex) {
-                Logger.getLogger(InicioBean.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("Error en contexto de aplicación");
             }
 
         }
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario o contraseña incorrectas"));
+        FacesContext.getCurrentInstance().addMessage(null, 
+                new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error", "Usuario o contraseña incorrectas"));
 
     }
 
@@ -59,7 +58,7 @@ public class InicioBean {
             case "trocador":
                 return rootPath + "/modulos/trocador/disponibles.xhtml?faces-redirect=true";
             case "admin":
-                return rootPath + "/modulos/admin/disponibles.xhtml?faces-redirect=true";
+                    return rootPath + "/modulos/admin/disponibles.xhtml?faces-redirect=true";
             case "operador":
                 return rootPath + "/modulos/logistico/disponibles.xhtml?faces-redirect=true";
             default:

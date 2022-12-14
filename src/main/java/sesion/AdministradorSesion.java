@@ -22,17 +22,8 @@ import javax.inject.Named;
 @SessionScoped
 public class AdministradorSesion implements Serializable{
     
-    @Inject
-    
-    
     private Usuario usuario;
     
-    @PostConstruct
-    public void init(){
-        System.out.println("Hola");
-      
-    }
-
     /**
      * @return the usuario
      */

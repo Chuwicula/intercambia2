@@ -15,7 +15,7 @@
                 <f:facet name="title">
                     Iniciar sesión
                 </f:facet>
-                <h:form>
+                <h:form >
                     <div class="card">
                         <div class="field">     
                             <p:messages id="messages" showDetail="true" closable="true">
@@ -38,7 +38,8 @@
                         <p:commandButton value="Iniciar sesión" 
                                          styleClass="rounded-button ui-button-danger"  
                                          action="#{inicioBean.iniciarSesion()}"
-                                         update="messages "
+                                         update="messages"
+                                         id ="btnIniciarSesion"
                                          />
                     </div>
                     <div class="card">

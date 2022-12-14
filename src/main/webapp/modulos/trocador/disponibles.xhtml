@@ -44,17 +44,80 @@
                             </div>
                         </p:dataViewGridItem>
 
+                        <p:dataViewListItem>
+                            <div class="product-list-item">
+                                <div class="product-list-detail">
+                                    <div class="product-name">#{elemento.nombreelemento}</div>
+                                    <div class="product-description">#{elemento.descripcion}</div>
+                                    <p:rating readonly="true" value="5"/>
+                                    <i class="pi pi-tag product-category-icon"/><span
+                                        class="product-category">#{elemento.idcategoria.nombrecategoria}</span>
+                                </div>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price"/>
+                                <p:commandButton 
+                                    value="Ofrecer truete"
+                                    icon="pi pi-shopping-cart"
+                                    >
+                                </p:commandButton>
+                            </div>
+                        </p:dataViewListItem>
+
                     </p:dataView>
 
                 </h:form>
 
                 <h:form rendered="#{elementosDisponiblesBean.indexactivo == 2}">
                     <p:commandButton value="Crear elemento"
-                                     type="button" 
                                      icon="pi pi-external-link" 
                                      update="content"
                                      action="#{elementosDisponiblesBean.setIndexactivo(4)}"/>
-                  
+
+                    <p:dataView var="elemento"  rows="12" paginator="true" value="#{misElementosBean.elementosDisponibles}"
+                                rowsPerPageTemplate="6,12,16"
+                                paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                gridIcon="pi pi-th-large" listIcon="pi pi-bars" emptyMessage="No hay productos disponibles"
+                                >
+                        <p:dataViewGridItem>
+                            <div class="product-grid-item-top">
+                                <div>
+                                    <i class="pi pi-tag product-category-icon"/>
+                                    <span class="product-category">#{elemento.idcategoria.nombrecategoria}</span>
+                                </div>
+                                <span class="product-badge status-#{elemento.esnuevo}">#{elemento.descripcion}</span>
+                            </div>
+                            <div class="product-grid-item-content">                               
+                                <div class="product-name">#{elemento.nombreelemento}</div>
+                                <div class="product-description">#{elemento.descripcion}</div>
+                                <p:rating readonly="true" value="5"/>
+                            </div>
+
+                            <div class="product-grid-item-bottom">
+                                <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price">                                   
+                                </h:outputText>                       
+                            </div>
+
+                        </p:dataViewGridItem>
+
+                         <p:dataViewListItem>
+                            <div class="product-list-item">
+                                <div class="product-list-detail">
+                                    <div class="product-name">#{elemento.nombreelemento}</div>
+                                    <div class="product-description">#{elemento.descripcion}</div>
+                                    <p:rating readonly="true" value="5"/>
+                                    <i class="pi pi-tag product-category-icon"/><span
+                                        class="product-category">#{elemento.idcategoria.nombrecategoria}</span>
+                                </div>
+                            </div>
+                            <div class="product-list-action">
+                                <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price"/>
+                                
+                            </div>
+                        </p:dataViewListItem>
+
+                    </p:dataView>
+
                 </h:form>
 
                 <h:form rendered="#{elementosDisponiblesBean.indexactivo == 3}">
@@ -91,7 +154,7 @@
                     </div>
                     <br/>
                     <p:commandButton value="Publicar" action="#{misElementosBean.crearElemento()}" 
-                                    />
+                                     />
 
 
                 </h:form>

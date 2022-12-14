@@ -66,6 +66,7 @@ public class ElementosDisponiblesBean implements Serializable {
      * @param indexactivo the indexactivo to set
      */
     public void setIndexactivo(int indexactivo) {
+        System.out.println("index "+ indexactivo);
         this.indexactivo = indexactivo;
     }
 

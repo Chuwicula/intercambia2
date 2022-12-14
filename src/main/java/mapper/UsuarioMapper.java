@@ -25,7 +25,7 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public Usuario readByCredentials(String mail, String pass) {
+    public Usuario buscarPorCredenciales(String mail, String pass) {
         Usuario retorno = null;
         try {
             TypedQuery<Usuario> queryUsuario = em.createNamedQuery("Usuario.findByPass", Usuario.class);
@@ -35,7 +35,7 @@ public class UsuarioMapper extends AbstractMapper<Usuario, Integer> {
         } catch (NoResultException ex) {
             System.out.println("No se encontró nada");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error en la transacción");
         }
         return retorno;
     }

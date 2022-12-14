@@ -7,6 +7,7 @@ package modelo;
 
 import entities.Categoria;
 import entities.Elemento;
+import entities.Estadoelemento;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,6 +19,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import mapper.CategoriaMapper;
 import mapper.ElementosMapper;
+import mapper.EstadoElementoMapper;
 import sesion.AdministradorSesion;
 
 /**
@@ -27,51 +29,51 @@ import sesion.AdministradorSesion;
 @Named(value = "misElementosBean")
 @ViewScoped
 public class MisElementosBean implements Serializable {
-    
+
     @Inject
     ElementosMapper elementosMapper;
-    
+
+    @Inject
+    EstadoElementoMapper estadoElementoMapper;
+
     @Inject
     AdministradorSesion sessionBean;
-    
+
     @Inject
     CategoriaMapper categoriaMapper;
-    
+
     private Set<Elemento> elementosDisponibles;
-    
+
     private Set<Categoria> categorias;
-    
+
     private Map<Integer, Categoria> categoriaMap;
-    
+
     private Integer idCategoria;
-    
+
     private Elemento nuevoElemento;
-    
+
+    private Estadoelemento estadoInicial;
+
     @PostConstruct
     public void init() {
         elementosDisponibles = new HashSet<>();
         elementosDisponibles.addAll(elementosMapper.getElementosUsuario(sessionBean.getUsuario()));
         nuevoElemento = new Elemento();
-        
         categorias = new HashSet<>();
         categorias.addAll(categoriaMapper.getAll());
-        
         categoriaMap = new HashMap<>();
-        
         for (Categoria ca : categorias) {
             categoriaMap.put(ca.getIdcategoria(), ca);
         }
-        
+        estadoInicial = estadoElementoMapper.buscar(1);
     }
-    
+
     public void crearElemento() {
-        System.out.println("Categoria : " + idCategoria);
-        System.out.println("Get categoria :" + categoriaMap.get(idCategoria));
         nuevoElemento.setIdcategoria(categoriaMap.get(idCategoria));
-        //System.out.println("Categoría: " + nuevoElemento.getIdcategoria().getNombrecategoria());
-        System.out.println("estado: " + nuevoElemento.isEsnuevo());
-        
+        nuevoElemento.setIdusuario(sessionBean.getUsuario());
+        nuevoElemento.setIdestadoelemento(estadoInicial);
         elementosMapper.crear(nuevoElemento);
+        elementosDisponibles.add(nuevoElemento);
     }
 
     /**
@@ -129,5 +131,5 @@ public class MisElementosBean implements Serializable {
     public void setIdCategoria(Integer idCategoria) {
         this.idCategoria = idCategoria;
     }
-    
+
 }
