@@ -14,11 +14,10 @@
         <h:form >    
             <div class="card">
                 <p:tabMenu activeIndex="#{elementosDisponiblesBean.indexactivo}">
-                    <p:menuitem value="Inicio" icon="pi pi-fw pi-home" update="content" action="#{elementosDisponiblesBean.setIndexactivo(1)}"/>   
-                    <p:menuitem value="Mi perfil"  icon="pi pi-fw pi-calendar" update="content" action="#{elementosDisponiblesBean.setIndexactivo(2)}">
+                    <p:menuitem id="inicio" value="Inicio" icon="pi pi-fw pi-home" update="content" action="#{elementosDisponiblesBean.setIndexactivo(1)}"/>   
+                    <p:menuitem  id="miperfil" value="Mi perfil"  icon="pi pi-fw pi-calendar" update="content" action="#{elementosDisponiblesBean.setIndexactivo(2)}">
                     </p:menuitem>
-                    <p:menuitem value="Mis Elementos"  icon="pi pi-fw pi-pencil" update="content" action="#{elementosDisponiblesBean.setIndexactivo(3)}">
-                        <f:param name="i" value="2"/>
+                    <p:menuitem id="miselementos" value="Mis Elementos"  icon="pi pi-fw pi-pencil" update="content" action="#{elementosDisponiblesBean.setIndexactivo(3)}">
                     </p:menuitem>
                 </p:tabMenu>
             </div>          
@@ -57,8 +56,9 @@
                             <div class="product-list-action">
                                 <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price"/>
                                 <p:commandButton 
-                                    value="Ofrecer truete"
+                                    value="Ofrecer trueque"
                                     icon="pi pi-shopping-cart"
+                                    id="ofrecertrueque"
                                     >
                                 </p:commandButton>
                             </div>
@@ -72,12 +72,14 @@
                     <p:commandButton value="Crear elemento"
                                      icon="pi pi-external-link" 
                                      update="content"
-                                     action="#{elementosDisponiblesBean.setIndexactivo(4)}"/>
+                                     action="#{elementosDisponiblesBean.setIndexactivo(4)}"
+                                     id="btnCrearElemento"/>
 
                     <p:dataView var="elemento"  rows="12" paginator="true" value="#{misElementosBean.elementosDisponibles}"
                                 rowsPerPageTemplate="6,12,16"
                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                 gridIcon="pi pi-th-large" listIcon="pi pi-bars" emptyMessage="No hay productos disponibles"
+                                id="misElementos"
                                 >
                         <p:dataViewGridItem>
                             <div class="product-grid-item-top">
@@ -126,24 +128,24 @@
 
                 <h:form rendered="#{elementosDisponiblesBean.indexactivo == 4}">
                     <p:outputLabel value="Nombre"/>
-                    <p:inputText value="#{misElementosBean.nuevoElemento.nombreelemento}"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.nombreelemento}" id="nombreElemento"/>
                     <br/>
                     <p:outputLabel value="Descripción"/>
-                    <p:inputText value="#{misElementosBean.nuevoElemento.descripcion}"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.descripcion}" id="descripcionElemento"/>
                     <br/>
                     <p:outputLabel value="Estado"/>
                     <p:selectBooleanButton onLabel="Usado" offLabel="Nuevo" 
                                            style="width:6rem" 
-                                           value="#{misElementosBean.nuevoElemento.esnuevo}"/>
+                                           value="#{misElementosBean.nuevoElemento.esnuevo}" id="estadoElemento"/>
                     <br/>
 
                     <p:outputLabel value="Objeto deseado, ingrese los elementos separados por coma"/>
-                    <p:inputText value="#{misElementosBean.nuevoElemento.elementosdesdeados}"/>
+                    <p:inputText value="#{misElementosBean.nuevoElemento.elementosdesdeados}" id="elementoDeseado"/>
                     <br/>
                     <p:outputLabel value="Categoría"/>
                     <div class="field col-12 md:col-4">
                         <p:outputLabel value="Label"/>
-                        <p:selectOneMenu id="labeled" value="#{misElementosBean.idCategoria}" 
+                        <p:selectOneMenu id="categorias" value="#{misElementosBean.idCategoria}" 
                                          label="Seleccione una categoría"
                                          alwaysDisplayLabel="true">
                             <f:selectItems value="#{misElementosBean.categorias}" 
@@ -153,7 +155,7 @@
                         </p:selectOneMenu>
                     </div>
                     <br/>
-                    <p:commandButton value="Publicar" action="#{misElementosBean.crearElemento()}" 
+                    <p:commandButton value="Publicar" action="#{misElementosBean.crearElemento()}" id="publicar"
                                      />
 
 
