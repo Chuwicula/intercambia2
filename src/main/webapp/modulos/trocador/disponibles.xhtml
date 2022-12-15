@@ -54,11 +54,16 @@
                                 </div>
                             </div>
                             <div class="product-list-action">
+                                <p:outputLabel value="Elemento deseado"/>
                                 <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price"/>
+                                <br/>
                                 <p:commandButton 
                                     value="Ofrecer trueque"
                                     icon="pi pi-shopping-cart"
                                     id="ofrecertrueque"
+                                    action="#{elementosDisponiblesBean.setIndexactivo(5)}"
+                                    actionListener="#{elementosDisponiblesBean.setElementoSeleccionado(elemento)}"
+                                    update="content"
                                     >
                                 </p:commandButton>
                             </div>
@@ -102,7 +107,7 @@
 
                         </p:dataViewGridItem>
 
-                         <p:dataViewListItem>
+                        <p:dataViewListItem>
                             <div class="product-list-item">
                                 <div class="product-list-detail">
                                     <div class="product-name">#{elemento.nombreelemento}</div>
@@ -114,7 +119,7 @@
                             </div>
                             <div class="product-list-action">
                                 <h:outputText value="#{elemento.elementosdesdeados}" styleClass="product-price"/>
-                                
+
                             </div>
                         </p:dataViewListItem>
 
@@ -157,6 +162,25 @@
                     <br/>
                     <p:commandButton value="Publicar" action="#{misElementosBean.crearElemento()}" id="publicar"
                                      />
+
+
+                </h:form>
+
+                <h:form rendered="#{elementosDisponiblesBean.indexactivo == 5}">
+                    
+
+                    <p:dataTable value="#{misElementosBean.elementosDisponibles}" var="elemento">
+                        <p:column headerText="Elemento">
+                            <p:outputLabel value="#{elemento.nombreelemento}"/>
+                        </p:column>                        
+                        <p:column headerText="Categoría">
+                            <p:outputLabel value="#{elemento.idcategoria.nombrecategoria}"/>
+                        </p:column>                   
+                        <p:column headerText="Acción">
+                            <p:commandButton value="Enviar solicitud" action="#{enviarSolicitudTrueueBean.enviarSolicitud(elemento)}"/>
+                        </p:column>                   
+                    </p:dataTable>
+
 
 
                 </h:form>

@@ -8,6 +8,8 @@ package entities;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -21,6 +23,7 @@ import javax.persistence.OneToOne;
 public class Solicitud implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idsolicitud")
     private Integer idsolicitud;
 
@@ -35,8 +38,12 @@ public class Solicitud implements Serializable {
     @JoinColumn(name = "idelementosolicitado")
     private Elemento elemento;
 
+    @JoinColumn(name = "idelementoofrecido")
+    @ManyToOne
+    private Elemento idelementoofrecido;
+
     @Column(name = "estado")
-    private Boolean estado;
+    private Integer estado;
 
     /**
      * @return the ordenenvio
@@ -97,15 +104,29 @@ public class Solicitud implements Serializable {
     /**
      * @return the estado
      */
-    public Boolean getEstado() {
+    public Integer getEstado() {
         return estado;
     }
 
     /**
      * @param estado the estado to set
      */
-    public void setEstado(Boolean estado) {
+    public void setEstado(Integer estado) {
         this.estado = estado;
+    }
+
+    /**
+     * @return the idelementoofrecido
+     */
+    public Elemento getIdelementoofrecido() {
+        return idelementoofrecido;
+    }
+
+    /**
+     * @param idelementoofrecido the idelementoofrecido to set
+     */
+    public void setIdelementoofrecido(Elemento idelementoofrecido) {
+        this.idelementoofrecido = idelementoofrecido;
     }
 
 }

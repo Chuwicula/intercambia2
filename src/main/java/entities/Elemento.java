@@ -41,16 +41,19 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Elemento implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idelemento")
     private Integer idelemento;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "nombreelemento")
     private String nombreelemento;
+    
     @Size(max = 200)
     @Column(name = "descripcion")
     private String descripcion;
@@ -64,15 +67,15 @@ public class Elemento implements Serializable {
     @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria")
     @ManyToOne(optional = false)
     private Categoria idcategoria;
+    
     @JoinColumn(name = "idestadoelemento", referencedColumnName = "idestadoelemento")
     @ManyToOne(optional = false)
     private Estadoelemento idestadoelemento;
     
-    
-
     @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
     @ManyToOne(optional = false)
     private Usuario idusuario;
+    
     @OneToMany(mappedBy = "elemento")
     private List<Solicitud> solicitudes;
 

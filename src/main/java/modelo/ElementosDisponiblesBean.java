@@ -32,6 +32,8 @@ public class ElementosDisponiblesBean implements Serializable {
 
     private Set<Elemento> elementosDisponibles;
     
+    private Elemento elementoSeleccionado;
+    
     private int indexactivo;
 
     @PostConstruct
@@ -39,6 +41,8 @@ public class ElementosDisponiblesBean implements Serializable {
         elementosDisponibles = new HashSet<>();
         elementosDisponibles.addAll(elementosMapper.getElementosDisponibles(sessionBean.getUsuario()));
     }
+    
+    
 
     /**
      * @return the elementosDisponibles
@@ -66,6 +70,20 @@ public class ElementosDisponiblesBean implements Serializable {
      */
     public void setIndexactivo(int indexactivo) {
         this.indexactivo = indexactivo;
+    }
+
+    /**
+     * @return the elementoSeleccionado
+     */
+    public Elemento getElementoSeleccionado() {
+        return elementoSeleccionado;
+    }
+
+    /**
+     * @param elementoSeleccionado the elementoSeleccionado to set
+     */
+    public void setElementoSeleccionado(Elemento elementoSeleccionado) {
+        this.elementoSeleccionado = elementoSeleccionado;
     }
 
 }

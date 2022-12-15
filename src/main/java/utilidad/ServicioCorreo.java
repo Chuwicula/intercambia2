@@ -31,20 +31,27 @@ public class ServicioCorreo {
     }
 
     public static boolean enviarNotificacion(Set<String> to, String subject, String body) {
+
+        /*
+        cuenta outlook:
+intercambialo2022@outlook.com
+clave: 2022Intercambialo
+        
+        https://www.wpoven.com/tools/free-smtp-server-for-testing
+         */
         Session session;
-        final String from = "notificaciones@fondoaccion.org";
-        final String pass = "0651&*Pez";
-        final String host = "smtp.office365.com";
+        final String from = "api";
+        final String pass = "822d7b9d562c40692fd630c46af973bb";
+        final String host = "smtp.freesmtpservers.com";
         Properties properties = System.getProperties();
-        System.setProperty("https.protocols", "TLSv1.1");
         // Setup mail server
-        properties.put("mail.smtp.starttls.enable", "true");
+        //properties.put("mail.smtp.starttls.enable", "true");
         properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.user", from);
-        properties.put("mail.smtp.password", pass);
-        properties.put("mail.smtp.port", "587");
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.smtp.ssl.protocols", "TLSv1.2");
+        //properties.put("mail.smtp.user", from);
+        //properties.put("mail.smtp.password", pass);
+        properties.put("mail.smtp.port", "25");
+        //properties.put("mail.smtp.auth", "true");
+       // properties.setProperty("mail.smtp.ssl.protocols", "TLSv1.2");
         session = Session.getDefaultInstance(properties);
         Transport transport = null;
         try {
@@ -70,7 +77,6 @@ public class ServicioCorreo {
             message.setSubject(subject);
 
             // Now set the actual message
-
             message.setContent(multipart, "text/html; charset=utf-8");
             //message.setText(body);
 
